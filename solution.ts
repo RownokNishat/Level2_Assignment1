@@ -107,8 +107,17 @@ function calculateTotalPrice(products: Product[]): number {
   const totalPrice = products.reduce(
     (acc: number, product: Product): number => {
       const totalProductPrice = product.price * product.quantity;
-      const discountPrice =
-        (totalProductPrice * (product?.discount || 0)) / 100;
+
+      // Validate discount range (0-100)
+      let discount = product?.discount || 0;
+      if (discount < 0 || discount > 100) {
+        console.warn(
+          `Invalid discount ${discount}% for ${product.name}. Using 0%`
+        );
+        discount = 0;
+      }
+
+      const discountPrice = (totalProductPrice * discount) / 100;
       return acc + (totalProductPrice - discountPrice);
     },
     0
