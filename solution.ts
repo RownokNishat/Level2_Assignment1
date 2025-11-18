@@ -1,6 +1,6 @@
 function formatValue(
   params: string | number | boolean
-): string | number | boolean | undefined {
+): string | number | boolean {
   if (typeof params === "string") {
     return params.toUpperCase();
   } else if (typeof params === "number") {
@@ -8,13 +8,14 @@ function formatValue(
   } else if (typeof params === "boolean") {
     return !params;
   }
+  throw new Error("Invalid input format");
 }
-function getLength(params: string | unknown[]): number | undefined {
-  if (typeof params === "string") {
-    return params.length;
-  } else if (Array.isArray(params)) {
+
+function getLength(params: string | any[]): number {
+  if (typeof params === "string" || Array.isArray(params)) {
     return params.length;
   }
+  throw new Error("Invalid input");
 }
 
 class Person {
@@ -33,7 +34,6 @@ interface SingleBook {
   title: string;
   rating: number;
 }
-
 function filterByRating(books: SingleBook[]): SingleBook[] {
   return books.filter((book: SingleBook) => book.rating >= 4);
 }
@@ -45,9 +45,7 @@ interface User {
   isActive: boolean;
 }
 function filterActiveUsers(users: User[]): User[] {
-  return users.filter((user: User) => {
-    return user.isActive === true;
-  });
+  return users.filter((user) => user.isActive);
 }
 
 interface Book {
@@ -56,25 +54,47 @@ interface Book {
   publishedYear: number;
   isAvailable: boolean;
 }
-function printBookDetails(book: Book): string {
-  return `Title: ${book.title}, Author: ${book.author} , Published: ${
-    book.publishedYear
-  }, Available: ${book.isAvailable ? "Yes" : "No"}`;
+function printBookDetails(book: Book): void {
+  console.log(
+    `Title: ${book.title}, Author: ${book.author}, Published: ${
+      book.publishedYear
+    }, Available: ${book.isAvailable ? "Yes" : "No"}`
+  );
 }
 
-function getUniqueValues<T, X>(arrA: T[], arrB: X[]) {
-  const uniqueArrayMap = new Map();
+function getUniqueValues(
+  arrA: (string | number)[],
+  arrB: (string | number)[]
+): (string | number)[] {
+  const result: (string | number)[] = [];
+
   for (let i = 0; i < arrA.length; i++) {
-    if (!uniqueArrayMap.has(arrA[i])) {
-      uniqueArrayMap.set(arrA[i], 1);
+    let isDuplicate = false;
+    for (let j = 0; j < result.length; j++) {
+      if (result[j] === arrA[i]) {
+        isDuplicate = true;
+        break;
+      }
+    }
+    if (!isDuplicate) {
+      result[result.length] = arrA[i];
     }
   }
+
   for (let i = 0; i < arrB.length; i++) {
-    if (!uniqueArrayMap.has(arrB[i])) {
-      uniqueArrayMap.set(arrB[i], 1);
+    let isDuplicate = false;
+    for (let j = 0; j < result.length; j++) {
+      if (result[j] === arrB[i]) {
+        isDuplicate = true;
+        break;
+      }
+    }
+    if (!isDuplicate) {
+      result[result.length] = arrB[i];
     }
   }
-  return Array.from(uniqueArrayMap.keys());
+
+  return result;
 }
 
 interface Product {
@@ -83,7 +103,6 @@ interface Product {
   quantity: number;
   discount?: number;
 }
-
 function calculateTotalPrice(products: Product[]): number {
   const totalPrice = products.reduce(
     (acc: number, product: Product): number => {
@@ -96,10 +115,3 @@ function calculateTotalPrice(products: Product[]): number {
   );
   return totalPrice;
 }
-const products = [
-  { name: "Pen", price: 10, quantity: 2 },
-  { name: "Notebook", price: 25, quantity: 3, discount: 10 },
-  { name: "Bag", price: 50, quantity: 1, discount: 20 },
-];
-
-console.log(calculateTotalPrice(products));
