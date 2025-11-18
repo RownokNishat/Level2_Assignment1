@@ -108,7 +108,6 @@ function calculateTotalPrice(products: Product[]): number {
     (acc: number, product: Product): number => {
       const totalProductPrice = product.price * product.quantity;
 
-      // Validate discount range (0-100)
       let discount = product?.discount || 0;
       if (discount < 0 || discount > 100) {
         console.warn(

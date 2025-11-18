@@ -4,8 +4,8 @@
 
 ### `interface`
 
-- অবজেক্ট বা ক্লাসের আকৃতি (shape) বর্ণনা করার জন্য সাধারণত ব্যবহৃত হয়।
-- Declaration merging সমর্থন করে — একই নামে একাধিক interface ঘোষণা করলে তারা একত্রিত হয় (open).
+- অবজেক্ট বা ক্লাসের আকৃতি বর্ণনা করার জন্য সাধারণত ব্যবহৃত হয়।
+- Declaration merging সমর্থন করে — একই নামে একাধিক interface ঘোষণা করলে তারা একত্রিত হয়.
 
   ```ts
   interface User {
@@ -49,8 +49,8 @@
   type UserObj = { name: string; age: number };
   ```
 
-- declaration merging সমর্থন করে না — একবার type ঘোষণা করলে পরে একই নামে নতুন প্রপার্টি যোগ করা যাবে না (closed)।
-- interface-কে extend করার মত কাজ করতে পারে intersection (&) বা extends (object type হলে) ব্যবহার করে:
+- declaration merging সমর্থন করে না — একবার type ঘোষণা করলে পরে একই নামে নতুন প্রপার্টি যোগ করা যাবে না।
+- interface-কে extend করার মত কাজ করতে পারে intersection বা extends ব্যবহার করে:
 
   ```ts
   type Person = { name: string };
@@ -129,7 +129,7 @@
 
 - সাধারণত নিচের পরিস্থিতিগুলোতে ব্যবহার করা হয়:
 
-  - ফাংশন যেগুলি exception ছুড়ে (throw) এবং কখনো return করে না
+  - ফাংশন যেগুলি exception ছুড়ে এবং কখনো return করে না
 
     ```ts
     function fail(message: string): never {
